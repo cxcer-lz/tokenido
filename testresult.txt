@@ -1,0 +1,135 @@
+cxcer@DESKTOP-V838SFU:~/tokenido$ forge test --match-path test/tokenido.t.sol -vvvv
+[⠊] Compiling...
+[⠘] Compiling 35 files with Solc 0.8.26
+[⠃] Solc 0.8.26 finished in 705.79ms
+Compiler run successful!
+
+Ran 5 tests for test/tokenido.t.sol:IDOContractTest
+[PASS] testPresaleFail() (gas: 20837)
+Traces:
+  [20837] IDOContractTest::testPresaleFail()
+    ├─ [0] VM::startPrank(user: [0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D])
+    │   └─ ← [Return]
+    ├─ [0] VM::deal(user: [0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D], 1000000000000000 [1e15])
+    │   └─ ← [Return]
+    ├─ [0] VM::expectRevert(min limit)
+    │   └─ ← [Return]
+    ├─ [2594] IDOContract::presale{value: 1000000000000000}()
+    │   └─ ← [Revert] revert: min limit
+    ├─ [0] VM::stopPrank()
+    │   └─ ← [Return]
+    └─ ← [Stop]
+
+[PASS] testPresaleSuccess() (gas: 48161)
+Logs:
+  0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496
+
+Traces:
+  [48161] IDOContractTest::testPresaleSuccess()
+    ├─ [0] VM::startPrank(user: [0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D])
+    │   └─ ← [Return]
+    ├─ [0] VM::deal(user: [0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D], 100000000000000000 [1e17])
+    │   └─ ← [Return]
+    ├─ [26351] IDOContract::presale{value: 100000000000000000}()
+    │   ├─ emit Presale(sender: user: [0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D], amount: 100000000000000000 [1e17])
+    │   └─ ← [Stop]
+    ├─ [0] VM::stopPrank()
+    │   └─ ← [Return]
+    ├─ [540] IDOContract::balances(user: [0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D]) [staticcall]
+    │   └─ ← [Return] 100000000000000000 [1e17]
+    ├─ [0] console::log(IDOContractTest: [0x7FA9385bE102ac3EAc297483Dd6233D62b3e1496]) [staticcall]
+    │   └─ ← [Stop]
+    └─ ← [Stop]
+
+[PASS] testWithdraw() (gas: 24804)
+Traces:
+  [24804] IDOContractTest::testWithdraw()
+    ├─ [0] VM::deal(IDOContract: [0xCeF98e10D1e80378A9A74Ce074132B66CDD5e88d], 101000000000000000000 [1.01e20])
+    │   └─ ← [Return]
+    ├─ [0] VM::startPrank(owner: [0x7c8999dC9a822c1f0Df42023113EDB4FDd543266])
+    │   └─ ← [Return]
+    ├─ [0] VM::warp(2592002 [2.592e6])
+    │   └─ ← [Return]
+    ├─ [14981] IDOContract::withdraw()
+    │   ├─ [0] owner::fallback{value: 101000000000000000000}()
+    │   │   └─ ← [Stop]
+    │   ├─ emit ETHWithdrawn(amount: 101000000000000000000 [1.01e20])
+    │   └─ ← [Stop]
+    ├─ [0] VM::stopPrank()
+    │   └─ ← [Return]
+    ├─ [0] VM::assertEq(0, 0) [staticcall]
+    │   └─ ← [Return]
+    └─ ← [Stop]
+
+[PASS] testpresaleandclaimETH() (gas: 63612)
+Logs:
+  0
+
+Traces:
+  [66810] IDOContractTest::testpresaleandclaimETH()
+    ├─ [0] VM::deal(IDOContract: [0xCeF98e10D1e80378A9A74Ce074132B66CDD5e88d], 90000000000000000000 [9e19])
+    │   └─ ← [Return]
+    ├─ [0] VM::startPrank(user: [0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D])
+    │   └─ ← [Return]
+    ├─ [0] VM::deal(user: [0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D], 50000000000000000 [5e16])
+    │   └─ ← [Return]
+    ├─ [26351] IDOContract::presale{value: 50000000000000000}()
+    │   ├─ emit Presale(sender: user: [0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D], amount: 50000000000000000 [5e16])
+    │   └─ ← [Stop]
+    ├─ [0] VM::warp(2592001 [2.592e6])
+    │   └─ ← [Return]
+    ├─ [34157] IDOContract::refund()
+    │   ├─ [0] user::fallback{value: 50000000000000000}()
+    │   │   └─ ← [Stop]
+    │   ├─ emit Refund(user: user: [0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D], amountt: 50000000000000000 [5e16])
+    │   └─ ← [Stop]
+    ├─ [0] VM::stopPrank()
+    │   └─ ← [Return]
+    ├─ [540] IDOContract::balances(user: [0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D]) [staticcall]
+    │   └─ ← [Return] 0
+    ├─ [0] console::log(0) [staticcall]
+    │   └─ ← [Stop]
+    ├─ [540] IDOContract::balances(user: [0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D]) [staticcall]
+    │   └─ ← [Return] 0
+    ├─ [0] VM::assertEq(0, 0) [staticcall]
+    │   └─ ← [Return]
+    ├─ [0] VM::assertEq(50000000000000000 [5e16], 50000000000000000 [5e16]) [staticcall]
+    │   └─ ← [Return]
+    └─ ← [Stop]
+
+[PASS] testsuccesspresaleandlClaim() (gas: 69024)
+Logs:
+  999100809271655510040
+
+Traces:
+  [71140] IDOContractTest::testsuccesspresaleandlClaim()
+    ├─ [0] VM::deal(IDOContract: [0xCeF98e10D1e80378A9A74Ce074132B66CDD5e88d], 99990000000000000000 [9.999e19])
+    │   └─ ← [Return]
+    ├─ [0] VM::startPrank(user: [0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D])
+    │   └─ ← [Return]
+    ├─ [0] VM::deal(user: [0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D], 100000000000000000 [1e17])
+    │   └─ ← [Return]
+    ├─ [26351] IDOContract::presale{value: 100000000000000000}()
+    │   ├─ emit Presale(sender: user: [0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D], amount: 100000000000000000 [1e17])
+    │   └─ ← [Stop]
+    ├─ [0] VM::warp(864002 [8.64e5])
+    │   └─ ← [Return]
+    ├─ [38526] IDOContract::claim()
+    │   ├─ [29988] MockERC20::transfer(user: [0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D], 999100809271655510040 [9.991e20])
+    │   │   ├─ emit Transfer(from: IDOContract: [0xCeF98e10D1e80378A9A74Ce074132B66CDD5e88d], to: user: [0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D], value: 999100809271655510040 [9.991e20])
+    │   │   └─ ← [Return] true
+    │   ├─ emit Claim(user: user: [0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D], amount: 999100809271655510040 [9.991e20])
+    │   └─ ← [Stop]
+    ├─ [562] MockERC20::balanceOf(user: [0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D]) [staticcall]
+    │   └─ ← [Return] 999100809271655510040 [9.991e20]
+    ├─ [0] console::log(999100809271655510040 [9.991e20]) [staticcall]
+    │   └─ ← [Stop]
+    ├─ [0] VM::stopPrank()
+    │   └─ ← [Return]
+    ├─ [562] MockERC20::balanceOf(user: [0x6CA6d1e2D5347Bfab1d91e883F1915560e09129D]) [staticcall]
+    │   └─ ← [Return] 999100809271655510040 [9.991e20]
+    └─ ← [Stop]
+
+Suite result: ok. 5 passed; 0 failed; 0 skipped; finished in 1.20ms (411.87µs CPU time)
+
+Ran 1 test suite in 3.19ms (1.20ms CPU time): 5 tests passed, 0 failed, 0 skipped (5 total tests)
